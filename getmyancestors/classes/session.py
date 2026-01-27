@@ -30,6 +30,7 @@ class Session(requests.Session):
         verbose=False,
         logfile=False,
         timeout=60,
+        rate_limit=None,
     ):
         super().__init__()
         self.username = username
@@ -43,10 +44,11 @@ class Session(requests.Session):
         self.counter = 0
         self.headers = {"User-Agent": UserAgent().firefox}
 
-        # Apply a rate-limit (5 requests per second) to all requests
-        adapter = LimiterAdapter(per_second=5)
-        self.mount('http://', adapter)
-        self.mount('https://', adapter)
+        # Apply a rate-limit (max # requests per second) to all endpoints
+        if rate_limit:
+            adapter = LimiterAdapter(per_second=rate_limit)
+            self.mount('http://', adapter)
+            self.mount('https://', adapter)
 
         self.login()
 
