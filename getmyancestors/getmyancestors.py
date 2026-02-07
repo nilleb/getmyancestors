@@ -89,6 +89,12 @@ def main():
         help="Timeout in seconds [60]",
     )
     parser.add_argument(
+        "--rate-limit",
+        metavar="<INT>",
+        type=int,
+        help="Max # requests per second",
+    )
+    parser.add_argument(
         "--show-password",
         action="store_true",
         default=False,
@@ -183,6 +189,7 @@ def main():
         args.verbose,
         args.logfile,
         args.timeout,
+        args.rate_limit,
     )
     if not fs.logged:
         sys.exit(2)

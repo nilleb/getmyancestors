@@ -7,6 +7,8 @@ import webbrowser
 import requests
 from fake_useragent import UserAgent
 
+from requests_ratelimiter import LimiterAdapter
+
 # local imports
 from getmyancestors.classes.translation import translations
 
@@ -31,6 +33,7 @@ class Session(requests.Session):
         verbose=False,
         logfile=False,
         timeout=60,
+        rate_limit=None,
     ):
         super().__init__()
         self.username = username
@@ -43,6 +46,13 @@ class Session(requests.Session):
         self.fid = self.lang = self.display_name = None
         self.counter = 0
         self.headers = {"User-Agent": UserAgent().firefox}
+
+        # Apply a rate-limit (max # requests per second) to all endpoints
+        if rate_limit:
+            adapter = LimiterAdapter(per_second=rate_limit)
+            self.mount('http://', adapter)
+            self.mount('https://', adapter)
+
         self.login()
 
     @property
