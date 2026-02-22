@@ -1,7 +1,7 @@
 [project]
 name = "getmyancestors"
 description = "Retrieve GEDCOM data from FamilySearch Tree"
-requires-python = ">=3.7"
+requires-python = ">=3.10"
 license = {text = "GNU"}
 keywords = [
   "getmyancestors",
@@ -16,23 +16,24 @@ classifiers = [
     "Programming Language :: Python :: 3 :: Only",
 ]
 dependencies = [
-    "babelfish==0.6.1",
-    "diskcache==5.6.3",
-    "requests==2.32.3",
-    "fake-useragent==2.0.3",
-    "requests-ratelimiter==0.7.0"
+    "babelfish>=0.6.1",
+    "diskcache>=5.6.3",
+    "fake-useragent>=2.2.0",
+    "requests>=2.32.5",
+    "requests-ratelimiter>=0.9.1",
 ]
-dynamic = ["version", "readme"]
+dynamic = ["version"]
+readme = "README.md"
 
-[tool.setuptools.dynamic]
-version = {attr = "getmyancestors.__version__"}
-readme = {file = ["README.md"]}
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "getmyancestors/__init__.py"
 
 [project.urls]
 HomePage = "https://github.com/Linekio/getmyancestors"
-
-[tool.setuptools.package-data]
-getmyancestors = ["fstogedcom.png"]
 
 [project.scripts]
 getmyancestors = "getmyancestors.getmyancestors:main"
